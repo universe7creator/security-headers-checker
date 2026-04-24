@@ -1,0 +1,10 @@
+{
+  "name": "security-headers-checker",
+  "version": "1.0.0",
+  "description": "Scan and analyze HTTP security headers for any website",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  }
+}

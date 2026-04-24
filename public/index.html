@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Headers Checker — Scan & Fix HTTP Security Headers | $19 one-time</title>
+  <meta name="description" content="Scan and analyze HTTP security headers for any website. Get actionable recommendations to improve your web security posture with A-F grading.">
+  <meta property="og:title" content="Security Headers Checker">
+  <meta property="og:description" content="Analyze 15+ security headers. Get actionable fix recommendations.">
+  <meta property="og:image" content="https://security-headers-checker.vercel.app/og-image.png">
+  <meta property="og:url" content="https://security-headers-checker.vercel.app">
+  <meta name="twitter:card" content="summary_large_image">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      color: #f8fafc;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-text-alt {
+      background: linear-gradient(135deg, #f97316, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cta-button {
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      padding: 1rem 2.5rem;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: white;
+      border: none;
+      cursor: pointer;
+      animation: pulse 2s infinite;
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 50px rgba(139, 92, 246, 0.7);
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.4); }
+      50% { box-shadow: 0 0 60px rgba(139, 92, 246, 0.8); }
+    }
+    .feature-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover {
+      border-color: rgba(139, 92, 246, 0.5);
+      box-shadow: 0 25px 50px -12px rgba(139, 92, 246, 0.2);
+      transform: translateY(-4px);
+    }
+    .nav-blur {
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .demo-container {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2rem;
+    }
+    .grade-a { background: linear-gradient(135deg, #22c55e, #16a34a); }
+    .grade-b { background: linear-gradient(135deg, #84cc16, #65a30d); }
+    .grade-c { background: linear-gradient(135deg, #eab308, #ca8a04); }
+    .grade-d { background: linear-gradient(135deg, #f97316, #ea580c); }
+    .grade-f { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    .header-present {
+      background: rgba(34, 197, 94, 0.2);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+    .header-missing {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+    .delay-300 { animation-delay: 0.3s; }
+    .delay-400 { animation-delay: 0.4s; }
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      color: #94a3b8;
+    }
+    details {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+    summary {
+      padding: 1.25rem;
+      cursor: pointer;
+      font-weight: 600;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: '+';
+      font-size: 1.5rem;
+      color: #8b5cf6;
+      transition: transform 0.3s ease;
+    }
+    details[open] summary::after { transform: rotate(45deg); }
+    details > div { padding: 0 1.25rem 1.25rem; color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav-blur fixed w-full z-50 top-0">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center text-xl">🔒</div>
+        <span class="font-bold text-xl">Security Headers Checker</span>
+      </div>
+      <a href="#pricing" class="cta-button text-sm py-2 px-6">Get Access — $19</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center justify-center pt-24 pb-16 px-6">
+    <div class="max-w-5xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300 text-sm mb-8 animate-fadeInUp">
+        <span class="w-2 h-2 rounded-full bg-violet-400 animate-pulse"></span>
+        Protect your website from security vulnerabilities
+      </div>
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-fadeInUp delay-100">
+        Scan & Fix Your<br>
+        <span class="gradient-text">HTTP Security Headers</span>
+      </h1>
+      <p class="text-xl text-slate-400 max-w-2xl mx-auto mb-10 animate-fadeInUp delay-200">
+        Analyze 15+ security headers for any website. Get actionable recommendations
+        to improve your security posture with A-F grading system.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4 mb-12 animate-fadeInUp delay-300">
+        <a href="#demo" class="cta-button">Try Demo Scan →</a>
+        <a href="#pricing" class="px-8 py-4 rounded-xl border border-white/20 hover:bg-white/5 transition-all font-semibold">
+          Get Access — $19
+        </a>
+      </div>
+      <div class="flex flex-wrap justify-center gap-4 animate-fadeInUp delay-400">
+        <span class="trust-badge">✓ No signup required</span>
+        <span class="trust-badge">✓ Instant analysis</span>
+        <span class="trust-badge">✓ 15+ headers checked</span>
+        <span class="trust-badge">✓ One-time payment</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo Section -->
+  <section id="demo" class="py-24 px-6 bg-slate-950/50">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Live Security Scan Demo</h2>
+        <p class="text-slate-400">See how the security headers checker works with a real example</p>
+      </div>
+      <div class="demo-container">
+        <div class="flex gap-4 mb-6">
+          <input type="text" id="demoUrl" placeholder="Enter website URL (e.g., example.com)"
+                 class="flex-1 px-4 py-3 rounded-xl bg-slate-900 border border-white/10 text-white focus:border-violet-500 focus:outline-none">
+          <button onclick="runDemo()" class="cta-button py-3">Scan Now</button>
+        </div>
+        <div id="demoOutput" class="hidden">
+          <div class="flex items-center justify-between mb-6 p-4 rounded-xl bg-slate-900/50">
+            <div>
+              <div class="text-sm text-slate-400 mb-1">Security Grade</div>
+              <div class="text-4xl font-bold grade-b inline-block px-6 py-2 rounded-xl">B</div>
+            </div>
+            <div class="text-right">
+              <div class="text-sm text-slate-400 mb-1">Headers Found</div>
+              <div class="text-2xl font-bold text-white">11 / 15</div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="header-badge header-present">✓ Strict-Transport-Security</div>
+            <div class="header-badge header-present">✓ Content-Security-Policy</div>
+            <div class="header-badge header-present">✓ X-Frame-Options</div>
+            <div class="header-badge header-present">✓ X-Content-Type-Options</div>
+            <div class="header-badge header-present">✓ Referrer-Policy</div>
+            <div class="header-badge header-missing">✗ X-XSS-Protection</div>
+            <div class="header-badge header-present">✓ Permissions-Policy</div>
+            <div class="header-badge header-missing">✗ Cross-Origin-Embedder-Policy</div>
+          </div>
+          <div class="mt-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
+            <div class="flex items-start gap-3">
+              <span class="text-amber-400 text-xl">💡</span>
+              <div>
+                <div class="font-semibold text-amber-200 mb-1">Recommendations</div>
+                <ul class="text-sm text-amber-100/80 space-y-1">
+                  <li>• Add Cross-Origin-Embedder-Policy: require-corp</li>
+                  <li>• Enable X-XSS-Protection for legacy browser support</li>
+                  <li>• Consider adding Cross-Origin-Resource-Policy</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Complete Security Analysis</h2>
+        <p class="text-slate-400 max-w-2xl mx-auto">Professional-grade security header scanning with actionable insights</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="feature-card">
+          <div class="text-4xl mb-4">🔍</div>
+          <h3 class="text-xl font-bold mb-2">15+ Headers</h3>
+          <p class="text-slate-400 text-sm">Comprehensive analysis of all modern security headers including CSP, HSTS, and more.</p>
+        </div>
+        <div class="feature-card">
+          <div class="text-4xl mb-4">📊</div>
+          <h3 class="text-xl font-bold mb-2">A-F Grading</h3>
+          <p class="text-slate-400 text-sm">Instant security grade based on header coverage and configuration quality.</p>
+        </div>
+        <div class="feature-card">
+          <div class="text-4xl mb-4">🛠️</div>
+          <h3 class="text-xl font-bold mb-2">Fix Recommendations</h3>
+          <p class="text-slate-400 text-sm">Get specific, actionable advice on how to fix missing or misconfigured headers.</p>
+        </div>
+        <div class="feature-card">
+          <div class="text-4xl mb-4">📥</div>
+          <h3 class="text-xl font-bold mb-2">Export Reports</h3>
+          <p class="text-slate-400 text-sm">Download detailed PDF or JSON reports for your security audits and compliance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="py-24 px-6 bg-slate-950/50">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+        <p class="text-slate-400">Secure your website in three simple steps</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
+          <h3 class="text-xl font-bold mb-2">Enter URL</h3>
+          <p class="text-slate-400 text-sm">Type any website URL you want to analyze for security headers.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
+          <h3 class="text-xl font-bold mb-2">Instant Scan</h3>
+          <p class="text-slate-400 text-sm">Our tool analyzes all HTTP security headers in milliseconds.</p>
+        </div>
+        <div class="text-center">
+          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
+          <h3 class="text-xl font-bold mb-2">Get Results</h3>
+          <p class="text-slate-400 text-sm">Review your grade and implement the recommended security fixes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-24 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Simple, One-Time Pricing</h2>
+      <p class="text-slate-400 mb-12">No subscriptions. No recurring fees. Pay once, use forever.</p>
+      <div class="max-w-md mx-auto feature-card border-2 border-violet-500/30 relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-gradient-to-l from-violet-500 to-blue-500 text-white text-xs font-bold px-4 py-1 rounded-bl-xl">BEST VALUE</div>
+        <div class="p-8">
+          <h3 class="text-2xl font-bold mb-2">Lifetime Access</h3>
+          <p class="text-slate-400 text-sm mb-6">For security professionals and developers</p>
+          <div class="text-5xl font-bold mb-2">$<span class="gradient-text">19</span></div>
+          <p class="text-slate-500 text-sm mb-8">One-time payment • Lifetime updates</p>
+          <ul class="text-left space-y-3 mb-8">
+            <li class="flex items-center gap-3"><span class="text-green-400">✓</span> Unlimited security scans</li>
+            <li class="flex items-center gap-3"><span class="text-green-400">✓</span> 15+ header analysis</li>
+            <li class="flex items-center gap-3"><span class="text-green-400">✓</span> A-F security grading</li>
+            <li class="flex items-center gap-3"><span class="text-green-400">✓</span> Fix recommendations</li>
+            <li class="flex items-center gap-3"><span class="text-green-400">✓</span> PDF/JSON export</li>
+            <li class="flex items-center gap-3"><span class="text-green-400">✓</span> Priority support</li>
+            <li class="flex items-center gap-3"><span class="text-green-400">✓</span> Lifetime updates</li>
+          </ul>
+          <button class="cta-button w-full">Get Instant Access →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-24 px-6 bg-slate-950/50">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+      </div>
+      <details>
+        <summary>What security headers does it check?</summary>
+        <div>The tool analyzes 15+ headers including Strict-Transport-Security (HSTS), Content-Security-Policy (CSP), X-Frame-Options, X-Content-Type-Options, X-XSS-Protection, Referrer-Policy, Permissions-Policy, Cross-Origin-Embedder-Policy, Cross-Origin-Opener-Policy, Cross-Origin-Resource-Policy, and more.</div>
+      </details>
+      <details>
+        <summary>How is the security grade calculated?</summary>
+        <div>Grades are based on header coverage (which headers are present), configuration quality (proper values), and best practices. A = Excellent (12+ headers), B = Good (9-11), C = Fair (6-8), D = Poor (3-5), F = Critical (0-2).</div>
+      </details>
+      <details>
+        <summary>Can I scan any website?</question>
+        <div>Yes, you can scan any publicly accessible website. The tool makes HTTP requests to analyze response headers. Some sites with strict bot protection may block scans.</div>
+      </details>
+      <details>
+        <summary>Is there a limit on scans?</summary>
+        <div>No limits! Once you purchase, you get unlimited security header scans. Use it for your own sites, client sites, or security research.</div>
+      </details>
+      <details>
+        <summary>Do I get updates?</summary>
+        <div>Yes! All purchases include lifetime updates. As new security headers emerge and standards evolve, the tool will be updated to check them.</div>
+      </details>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 border-t border-white/10">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-blue-500 flex items-center justify-center text-sm">🔒</div>
+        <span class="font-semibold">Security Headers Checker</span>
+      </div>
+      <div class="text-slate-500 text-sm">
+        © 2026 Security Headers Checker. One-time purchase, lifetime access.
+      </div>
+      <div class="flex gap-6 text-sm">
+        <a href="#" class="text-slate-400 hover:text-white transition-colors">Privacy</a>
+        <a href="#" class="text-slate-400 hover:text-white transition-colors">Terms</a>
+        <a href="#" class="text-slate-400 hover:text-white transition-colors">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Demo functionality
+    function runDemo() {
+      const url = document.getElementById('demoUrl').value;
+      if (!url) {
+        document.getElementById('demoUrl').focus();
+        return;
+      }
+      document.getElementById('demoOutput').classList.remove('hidden');
+      document.getElementById('demoOutput').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>

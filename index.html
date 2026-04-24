@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Headers Checker - Analyze Website Security</title>
+  <meta name="description" content="Scan and analyze HTTP security headers for any website. Get actionable recommendations to improve web security posture.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    body { background: #0a0a0a; color: #fff; }
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .glass {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .glow {
+      box-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+    }
+    .grade-a { background: linear-gradient(135deg, #10b981, #059669); }
+    .grade-b { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .grade-c { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .grade-d { background: linear-gradient(135deg, #f97316, #ea580c); }
+    .grade-f { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .animate-fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Header -->
+  <header class="border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <span class="text-xl font-bold">Security Headers Checker</span>
+      </div>
+      <a href="https://profitbridge.lemonsqueezy.com/checkout/buy/security-headers-checker-001" class="px-4 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg font-medium hover:opacity-90 transition">
+        Buy Pro $19
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden py-20 px-4">
+    <div class="absolute inset-0 bg-gradient-to-b from-indigo-900/20 to-transparent"></div>
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">
+        Analyze Your <span class="gradient-text">Security Headers</span>
+      </h1>
+      <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+        Scan any website for HTTP security headers. Get instant analysis, security grades, and actionable recommendations to protect your web applications.
+      </p>
+
+      <!-- Scanner -->
+      <div class="glass rounded-2xl p-6 glow">
+        <div class="flex gap-3">
+          <input
+            type="text"
+            id="urlInput"
+            placeholder="Enter website URL (e.g., example.com)"
+            class="flex-1 px-4 py-3 bg-black/30 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500"
+          >
+          <button
+            onclick="scanWebsite()"
+            id="scanBtn"
+            class="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl font-semibold hover:opacity-90 transition flex items-center gap-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            Scan
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section id="results" class="max-w-6xl mx-auto px-4 pb-20 hidden">
+    <div id="resultsContent"></div>
+  </section>
+
+  <!-- Features -->
+  <section class="py-20 px-4 border-t border-white/10">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-12">Comprehensive Security Analysis</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="glass rounded-xl p-6">
+          <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">15+ Headers Checked</h3>
+          <p class="text-gray-400">Analyzes HSTS, CSP, X-Frame-Options, and all critical security headers.</p>
+        </div>
+        <div class="glass rounded-xl p-6">
+          <div class="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Security Grading</h3>
+          <p class="text-gray-400">Get an overall security grade from A to F based on your header configuration.</p>
+        </div>
+        <div class="glass rounded-xl p-6">
+          <div class="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold mb-2">Actionable Fixes</h3>
+          <p class="text-gray-400">Receive specific recommendations to improve your website security posture.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 px-4 border-t border-white/10">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+        <div class="glass rounded-xl p-6">
+          <h3 class="font-semibold mb-2">What are HTTP security headers?</h3>
+          <p class="text-gray-400">Security headers are HTTP response headers that help protect web applications from common attacks like XSS, clickjacking, and data injection.</p>
+        </div>
+        <div class="glass rounded-xl p-6">
+          <h3 class="font-semibold mb-2">Which headers are most important?</h3>
+          <p class="text-gray-400">HSTS, Content-Security-Policy, X-Frame-Options, and X-Content-Type-Options are considered essential for basic security.</p>
+        </div>
+        <div class="glass rounded-xl p-6">
+          <h3 class="font-semibold mb-2">How often should I scan my website?</h3>
+          <p class="text-gray-400">We recommend scanning after any deployment or configuration change, and at least monthly for production sites.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 py-8 px-4">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-gray-500">© 2026 Security Headers Checker. All rights reserved.</p>
+      <div class="flex gap-6">
+        <a href="#" class="text-gray-500 hover:text-white transition">Privacy</a>
+        <a href="#" class="text-gray-500 hover:text-white transition">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    async function scanWebsite() {
+      const url = document.getElementById('urlInput').value.trim();
+      if (!url) return;
+
+      const btn = document.getElementById('scanBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Scanning...';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch('/api/process', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        });
+
+        const data = await response.json();
+        displayResults(data);
+      } catch (error) {
+        alert('Error scanning website: ' + error.message);
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    function displayResults(data) {
+      const resultsSection = document.getElementById('results');
+      const content = document.getElementById('resultsContent');
+
+      const gradeClass = `grade-${data.overallGrade.toLowerCase()}`;
+
+      let headersHtml = data.headers.map(h => `
+        <div class="glass rounded-lg p-4 flex items-center justify-between animate-fade-in">
+          <div class="flex-1">
+            <div class="flex items-center gap-3">
+              <span class="px-2 py-1 rounded text-xs font-bold ${h.present ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}">
+                ${h.present ? 'PRESENT' : 'MISSING'}
+              </span>
+              <span class="font-semibold">${h.header}</span>
+              ${h.required ? '<span class="text-red-400 text-xs">*Required</span>' : ''}
+            </div>
+            <p class="text-sm text-gray-400 mt-1">${h.description}</p>
+            ${h.value ? `<code class="text-xs text-green-400 mt-1 block">${h.value}</code>` : ''}
+          </div>
+          <div class="w-10 h-10 rounded-full ${gradeClass} flex items-center justify-center font-bold text-sm ml-4">
+            ${h.grade}
+          </div>
+        </div>
+      `).join('');
+
+      content.innerHTML = `
+        <div class="glass rounded-2xl p-8 mb-8 animate-fade-in">
+          <div class="flex flex-col md:flex-row items-center gap-8">
+            <div class="w-32 h-32 rounded-full ${gradeClass} flex items-center justify-center text-4xl font-bold glow">
+              ${data.overallGrade}
+            </div>
+            <div class="text-center md:text-left">
+              <h2 class="text-2xl font-bold mb-2">Security Score: ${data.score}</h2>
+              <p class="text-gray-400">Required headers: ${data.requiredScore}</p>
+              <p class="text-sm text-gray-500 mt-2">Scanned: ${new Date(data.timestamp).toLocaleString()}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid gap-3">
+          ${headersHtml}
+        </div>
+
+        ${data.recommendations.length > 0 ? `
+          <div class="glass rounded-2xl p-6 mt-6">
+            <h3 class="text-xl font-bold mb-4">Recommendations</h3>
+            <ul class="space-y-2">
+              ${data.recommendations.map(r => `
+                <li class="flex items-start gap-3 text-yellow-400">
+                  <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                  </svg>
+                  <span>${r.action}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        ` : ''}
+      `;
+
+      resultsSection.classList.remove('hidden');
+      resultsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.getElementById('urlInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') scanWebsite();
+    });
+  </script>
+</body>
+</html>

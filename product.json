@@ -1,0 +1,44 @@
+{
+  "name": "Security Headers Checker",
+  "slug": "security-headers-checker",
+  "tagline": "Audit your website's HTTP security headers in seconds",
+  "description": "Scan and analyze HTTP security headers for any website. Get actionable recommendations to improve web security posture.",
+  "price": 19,
+  "tech_stack": [
+    "Next.js",
+    "TypeScript",
+    "Tailwind CSS"
+  ],
+  "category": "security",
+  "tags": [
+    "security",
+    "headers",
+    "https",
+    "csp",
+    "hsts",
+    "x-frame-options",
+    "security-scan"
+  ],
+  "status": "ready_to_deploy",
+  "version": "1.0.0",
+  "features": [
+    "Analyze 15+ security headers",
+    "CSP (Content Security Policy) validation",
+    "HSTS configuration check",
+    "X-Frame-Options detection",
+    "X-XSS-Protection analysis",
+    "Referrer-Policy check",
+    "Security grade scoring (A-F)",
+    "Actionable fix recommendations"
+  ],
+  "created_at": "2026-04-21T22:30:00Z",
+  "updated_at": "2026-04-21T22:30:00Z",
+  "checkout_url": "https://buy.polar.sh/polar_cl_dDipNSG0OGpdPuJ6tsUQ9ZDNgGJO0sxkKmQg54cnnWM",
+  "spec_version": "1.0",
+  "vercel_url": "https://security-headers-checker.vercel.app",
+  "deployed_cycle": 1108,
+  "payment_provider": "polar",
+  "polar_product_id": "93af876b-8172-40b3-a3b6-892e409a06ca",
+  "polar_product_price_id": "aa4ac183-ce1d-4be2-89c4-c9101da83f5f",
+  "polar_checkout_link_id": "970a476f-f77c-4260-931b-ac64fbec2a8d"
+}
