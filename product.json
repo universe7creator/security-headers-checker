@@ -19,7 +19,7 @@
     "x-frame-options",
     "security-scan"
   ],
-  "status": "ready_to_deploy",
+  "status": "live",
   "version": "1.0.0",
   "features": [
     "Analyze 15+ security headers",
@@ -40,5 +40,9 @@
   "payment_provider": "polar",
   "polar_product_id": "93af876b-8172-40b3-a3b6-892e409a06ca",
   "polar_product_price_id": "aa4ac183-ce1d-4be2-89c4-c9101da83f5f",
-  "polar_checkout_link_id": "970a476f-f77c-4260-931b-ac64fbec2a8d"
+  "polar_checkout_link_id": "970a476f-f77c-4260-931b-ac64fbec2a8d",
+  "deployment_url": "https://security-headers-checker-jknxguxcg-madnessqws-projects.vercel.app",
+  "github_url": "https://github.com/universe7creator/security-headers-checker",
+  "webhook_url": "https://security-headers-checker.vercel.app/api/webhook",
+  "created_cycle": 988
 }
